@@ -133,15 +133,15 @@
 ## Your Development Log
 
 ### Entry 1 - [Date and Time]
-**What I did**:
+**What I did**: Forked the repository & update student id to my id number
 
-**Details**:
+**Details**:i went to line 306 & edited the random id to mine
 
-**Challenges**:
+**Challenges**:running the schedulerSimulateion java file on netBeans smoothly & try to understand the output and the target of the code
 
-**Solution**:
+**Solution**: :I downloaded the Java code in pc, then I opened it in NetBeans, and I decided to copy the code and paste it each time after modifying it.
 
-**Time spent**:
+**Time spent**: 5 minutes
 
 ---
 
