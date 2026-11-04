@@ -32,10 +32,10 @@
 
 | Field | Your Answer |
 |-------|-------------|
-| **Full Name** | [Write your full name here] |
-| **Student ID** | [Write your student ID here] |
-| **University Email** | [yourid]@std.psau.edu.sa |
-| **GitHub Username** | [your-github-username] |
+| **Full Name** | Hibah Seralkhatem Mohammed Alam |
+| **Student ID** | 446052687 |
+| **University Email** | 446052687@std.psau.edu.sa |
+| **GitHub Username** | HibahAlam7 |
 | **Repository Link** | [Paste your repository link here] |
  
 ---
