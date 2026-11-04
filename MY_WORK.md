@@ -132,7 +132,7 @@
 
 ## Your Development Log
 
-### Entry 1 - [Date and Time]
+### Entry 1 - Nov 5, 2026, 1:45 AM
 **What I did**: Forked the repository & update student id to my id number
 
 **Details**:i went to line 306 & edited the random id to mine
