@@ -1,3 +1,4 @@
+package schedulersimulationsync;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
@@ -114,14 +115,15 @@ private final ReentrantLock queueLock = new ReentrantLock();
 private final Semaphore semaphore = new Semaphore(0);
     // Add a process to the ready queue (new process, or a process that did not finish its quantum)
     public void add(Process process) {
-        // TODO Feature 1: protect this critical section
+       queueLock.lock();
+    try {
         Thread thread = new Thread(process);
         list.add(thread);
         map.put(thread, process);
-
-        // TODO Feature 3: signal that one more process is available in the queue
-
-        System.out.println(Colors.BLUE + "  ➕ " + Colors.BOLD + Colors.CYAN + process.getName() + Colors.RESET +
+} finally {
+       queueLock.unlock();
+    }
+     System.out.println(Colors.BLUE + "  ➕ " + Colors.BOLD + Colors.CYAN + process.getName() + Colors.RESET +
                 Colors.BLUE + " (Priority: " + process.getPriority() + ") added to ready queue" + Colors.RESET +
                 " │ Remaining: " + Colors.YELLOW + process.getRemainingTime() + "ms" + Colors.RESET +
                 " of " + process.getBurstTime() + "ms");
@@ -129,7 +131,8 @@ private final Semaphore semaphore = new Semaphore(0);
 
     // Remove and return the thread at the head of the queue (or null if the queue is empty)
     public Thread poll() {
-        // TODO Feature 1: protect this critical section
+         queueLock.lock();
+    try {
         if (list.isEmpty()) {
             return null;
         }
@@ -137,24 +140,30 @@ private final Semaphore semaphore = new Semaphore(0);
         RaceWindow.pause();                 //    <- another CPU can read the SAME head here
         list.removeFirst();                 // 2) remove the head (it may be a different thread by now!)
         return head;
-    }
-
+    }finally{
+        queueLock.unlock();
+    }}
     public Process processOf(Thread thread) {
-        // TODO Feature 1: protect this access
+      queueLock.lock();
+    try {
         return map.get(thread);
-    }
-
+    }finally{
+        queueLock.unlock();
+    }}
     // Names of the processes currently waiting in the queue (used to display the ready queue)
     public String snapshot() {
-        // TODO Feature 1: protect this critical section
+queueLock.lock();
+    try {
         StringBuilder sb = new StringBuilder();
         for (Thread t : list) {
             if (sb.length() > 0) sb.append(" → ");
             sb.append(map.get(t).getName());
         }
         return sb.length() == 0 ? "empty" : sb.toString();
+    }finally{
+                queueLock.unlock();
     }
-}
+}}
 
 // Class representing a process (same as Assignment 1) - executes ONE time quantum per thread start
 class Process implements Runnable {
