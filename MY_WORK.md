@@ -302,7 +302,23 @@
 
 Verification block of the **original starter**:
 ```
-[Paste the verification block (or the exception/watchdog message) of the starter here]
+[[CPU-2] picks P1 | Ready queue: [P5 | P6 | P7 | P8 | P9 | P10 | P11 | P12 | P13]
+[CPU-3] picks P1 | Ready queue: [P5 | P6 | P7 | P8 | P9 | P10 | P11 | P12 | P13]
+[CPU-1] picks P1 | Ready queue: [P5 | P6 | P7 | P8 | P9 | P10 | P11 | P12 | P13]
+[CPU-4] picks P1 | Ready queue: [P5 | P6 | P7 | P8 | P9 | P10 | P11 | P12 | P13]
+
+Exception in thread "CPU-3" java.lang.IllegalThreadStateException
+	at java.base/java.lang.Thread.start(Thread.java:1416)
+	at schedulersimulationsync.CpuWorker.run(SchedulerSimulationSync.java:290)
+
+WATCHDOG: the simulation did not finish (21 s). A process was lost, or a CPU is blocked forever, or the 'completed' counter lost an update.
+
+=== VERIFICATION (expected values are computed from YOUR seed) ===
+  Context switches (quanta executed)     expected 28       observed 20       MISMATCH
+  Completed processes                    expected 13       observed 10       MISMATCH
+  Total service time (ms)                expected 43412    observed 30308    MISMATCH
+  Busy-waiting polls (must be 0)         expected 0        observed 740      MISMATCH
+  At least one check failed: a race condition or busy waiting is still present.]
 ```
 
 Verification block of **my final version**:
