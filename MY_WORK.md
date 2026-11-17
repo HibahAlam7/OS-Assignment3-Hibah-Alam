@@ -227,13 +227,13 @@ The program displayed: All shared values are consistent
 
 > 💡 **TIP:** Fill this in **last**, after all entries are written.
 
-**Total time spent on assignment**: [X hours]
+**Total time spent on assignment**: [2.5 hours]
 
-**Most challenging part**:
+**Most challenging part**:The most challenging part was understanding and implementing synchronization correctly, especially protecting the shared ready queue and statistics from race conditions.
 
-**Most interesting learning**:
+**Most interesting learning**: I learned how ReentrantLock provides mutual exclusion and how a counting semaphore can replace busy waiting by allowing CPU threads to wait efficiently when the ready queue is empty.
 
-**What I would do differently next time**:
+**What I would do differently next time**:I would test the program after every small change, keep better notes during each work session, and organize my development log while working instead of completing it at the end.
 
 ---
 
