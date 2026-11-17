@@ -323,7 +323,12 @@ WATCHDOG: the simulation did not finish (21 s). A process was lost, or a CPU is 
 
 Verification block of **my final version**:
 ```
-[Paste the verification block of your final version here (all lines ✔)]
+[??? VERIFICATION (expected values are computed from YOUR seed) ???
+  Context switches (quanta executed)     expected 28       observed 28       ?
+  Completed processes                    expected 13       observed 13       ?
+  Total service time (ms)                expected 43412    observed 43412    ?
+  Busy-waiting polls (must be 0)         expected 0        observed 0        ?
+  ? All shared values are consistent.]
 ```
 
 **Explanation of the timeline:**
