@@ -36,13 +36,13 @@
 | **Student ID** | 446052687 |
 | **University Email** | 446052687@std.psau.edu.sa |
 | **GitHub Username** | HibahAlam7 |
-| **Repository Link** | [Paste your repository link here] |
+| **Repository Link** | [(https://github.com/HibahAlam7?tab=repositories)] |
  
 ---
 
 ## 🎥 Video Link
 
-**Video Link**: [Paste your video link here]
+**Video Link**: [(https://youtu.be/cKsGLwjb7K4?si=yDQUkzEThp36vNWH)]
 
 > ⚠️ **WARNING:** The video must be **publicly accessible** ("Anyone with the link can view") on **Google Drive**, **YouTube (Unlisted or Public)** or any other cloud file-sharing system. A private, restricted or broken link counts as a **missing video (-1 mark)**.
 >
