@@ -362,7 +362,8 @@ The final value is 13 instead of 14, so one update is lost]
 | Critical section (variable / method) | Lock used | Why it needs protection |
 |---|---|---|
 | [e.g., `ReadyQueue.poll()`] | [lock name] | [reason] |
-| [...] | [...] | [...] |
+| [Protects insertion into the shared queue and map] | [queueLock] | [ReadyQueue.add()] |
+| [Protects insertion into the shared queue and map] | [queueLock] | [ReadyQueue.add()] |
 
 ## Question 3: Busy Waiting vs Semaphore
 
