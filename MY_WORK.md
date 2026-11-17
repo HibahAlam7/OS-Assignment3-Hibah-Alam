@@ -177,26 +177,36 @@ Used lock() and unlock() with a try-finally structure to ensure the lock is rele
 ### Entry 4 - [Nov 17, 2026, 9:09 PM]
 **What I did**: Implemented locks to protect the shared statistics.
 
-**Details**:
+**Details**:Added locks to protect the shared statistics counters.
+Used separate locks for the context switches, completed processes, and total service time.
+Protected the update and read operations to prevent race conditions and lost updates
 
-**Challenges**:
+**Challenges**:The challenge was preventing multiple CPU threads from updating shared statistics simultaneously and causing incorrect counter values.
 
-**Solution**:
+**Solution**: I protected the critical sections with locks and used try-finally to guarantee that each lock was released after the operation.
 
-**Time spent**:
+**Time spent**:45 minutes
 
 ---
 
-### Entry 5 - [Date and Time]
-**What I did**:
+### Entry 5 - [Nov 17, 2026, 9:51 PM]
+**What I did**:Completed the synchronization implementation and checked the final verification results.
 
-**Details**:
+**Details**:Improved the scheduler using locks and a counting semaphore.
+Replaced busy waiting with semaphore-based synchronization.
+Ran the final program and checked the verification block.
+The expected and observed values matched:
+Context switches: 28
+Completed processes: 13
+Total service time: 43412 ms
+Busy-waiting polls: 0
+The program displayed: All shared values are consistent
 
-**Challenges**:
+**Challenges**:I needed to make sure that the synchronization changes worked correctly and that the final statistics matched the expected values.
 
-**Solution**:
+**Solution**:I ran the program and compared the expected values with the observed values in the verification block. All four values matched in the successful run.
 
-**Time spent**:
+**Time spent**:20 minutes
 
 ---
 
@@ -243,7 +253,7 @@ Used lock() and unlock() with a try-finally structure to ensure the lock is rele
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+[I learned that synchronization is important when multiple threads access shared data at the same time. Without proper protection, race conditions can happen and cause incorrect results, such as lost updates in shared counters. I used ReentrantLock to protect the ready queue and prevent multiple CPU threads from modifying it simultaneously. I also used separate locks to protect the shared statistics, such as context switches, completed processes, and total service time. Another important thing I learned was that a counting semaphore can replace busy waiting by allowing CPU threads to wait until a process becomes available. The most surprising part was seeing the original program fail because multiple CPUs selected the same process.]
 
 ## Question 2: What was the most challenging part of this assignment?
 
@@ -251,7 +261,7 @@ Used lock() and unlock() with a try-finally structure to ensure the lock is rele
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+[The most challenging part of this assignment was understanding how race conditions affected the scheduler. At first, I found it difficult to understand why multiple CPUs could select the same process from the ready queue. The original program helped me see the problem because it produced an IllegalThreadStateException and incorrect verification values. I also needed to understand where locks should be placed to protect shared data correctly. Choosing separate locks for the statistics and a different lock for the ready queue required careful attention. This experience helped me understand why synchronization must be applied to the correct critical sections.]
 
 ## Question 3: How did you overcome the challenges you faced?
 
@@ -259,7 +269,7 @@ Used lock() and unlock() with a try-finally structure to ensure the lock is rele
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+[I overcame the challenges by reading the assignment instructions and examining the Java code carefully. I focused on understanding the responsibilities of SharedStats, ReadyQueue, and CpuWorker before making changes. I implemented the synchronization features step by step, starting with protecting the ready queue and then protecting the shared statistics. After that, I used a counting semaphore to replace busy waiting. I also ran the program and checked the verification block to compare the expected values with the observed values. In my successful final run, all four values matched, and the program displayed that all shared values were consistent.]
 
 ## Question 4: Where can synchronization concepts be applied in real-world applications?
 
@@ -267,7 +277,7 @@ Used lock() and unlock() with a try-finally structure to ensure the lock is rele
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+[Synchronization is useful in many real-world applications where multiple users or processes access shared resources. For example, banking systems use synchronization to protect account balances when multiple transactions happen at the same time. Online ticket booking systems need synchronization to prevent two customers from reserving the same seat. A printer queue can also use synchronization to organize print jobs and prevent conflicts between multiple users. Databases use locks to protect shared data while transactions are being processed. These examples are similar to my scheduler because multiple CPU threads access shared resources that must be protected from race conditions..]
 
 ### Optional: What would you like to learn more about?
 
@@ -301,7 +311,7 @@ Used lock() and unlock() with a try-finally structure to ensure the lock is rele
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+[The original starter had a race condition because multiple CPU threads could access and modify the ready queue without proper synchronization. In my original output, CPU-1 and CPU-2 both selected process P1, and the program later threw an IllegalThreadStateException. A lost update can also happen in a shared counter: CPU-1 reads the value 12, then CPU-2 reads the same value before either thread writes. CPU-1 writes 13, and CPU-2 also writes 13, so one increment is lost instead of the counter becoming 14. This can happen on a real machine because thread scheduling can interrupt operations between reading and writing, even without RaceWindow.pause(), making the problem difficult to reproduce consistently..]
 
 Verification block of the **original starter**:
 ```
@@ -335,7 +345,9 @@ Verification block of **my final version**:
 ```
 
 **Explanation of the timeline:**
-[Explain the lost update step by step.]
+[CPU-1 reads contextSwitchCount = 12. 
+Before CPU-1 writes the updated value, CPU-2 also reads 12. CPU-1 writes 13, and then CPU-2 writes 13. 
+The final value is 13 instead of 14, so one update is lost]
 
 ## Question 2: Critical Sections and Lock Granularity
 
@@ -345,7 +357,7 @@ Verification block of **my final version**:
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+[I protected the ready queue operations, including add(), poll(), processOf(), and snapshot(), using queueLock. For the shared statistics, I used three separate locks: contextLock, completedLock, and serviceLock to protect their corresponding counters and update operations. I chose one lock per statistics variable because the counters are independent, allowing different statistics to be updated without unnecessarily blocking each other. The ready queue uses a different lock because it protects a different shared resource, and separating the locks reduces unnecessary waiting. Mutual exclusion is provided because only one thread can hold a particular lock at a time, and the finally blocks ensure that locks are released; however, the default ReentrantLock is not fair, so bounded waiting is not guaranteed.]
 
 | Critical section (variable / method) | Lock used | Why it needs protection |
 |---|---|---|
