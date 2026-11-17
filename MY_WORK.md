@@ -145,34 +145,37 @@
 
 ---
 
-### Entry 2 - [Date and Time]
-**What I did**:
+### Entry 2 - [Nov 8, 2026, 11:10 PM]
+**What I did**:Prepared the synchronization tools for the scheduler
 
-**Details**:
+**Details**: Added the ReentrantLock and Semaphore imports required for synchronization.
+Prepared the project for implementing mutual exclusion and replacing busy waiting.
 
-**Challenges**:
+**Challenges**:I needed to understand the purpose of the synchronization classes and how they would help protect shared resources.
 
-**Solution**:
+**Solution**:I reviewed the assignment requirements and the role of locks and semaphores before continuing with the implementation.
 
-**Time spent**:
-
----
-
-### Entry 3 - [Date and Time]
-**What I did**:
-
-**Details**:
-
-**Challenges**:
-
-**Solution**:
-
-**Time spent**:
+**Time spent**:45 minutes
 
 ---
 
-### Entry 4 - [Date and Time]
-**What I did**:
+### Entry 3 - [Nov 16, 2026, 5:46 PM]
+**What I did**:Protected the ready queue using a ReentrantLock.
+
+**Details**:Added a queueLock to the ReadyQueue class.
+Protected the queue operations so that multiple CPU threads could not modify the shared queue at the same time.
+Used lock() and unlock() with a try-finally structure to ensure the lock is released
+
+**Challenges**: The main challenge was making sure that all important operations accessing the shared ready queue were protected against race conditions.
+
+**Solution**: I used the same queue lock around the critical sections in the relevant methods and ensured that the lock was always released in the finally block.
+
+**Time spent**:20 minutes
+
+---
+
+### Entry 4 - [Nov 17, 2026, 9:09 PM]
+**What I did**: Implemented locks to protect the shared statistics.
 
 **Details**:
 
