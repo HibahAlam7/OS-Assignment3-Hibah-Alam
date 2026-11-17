@@ -362,8 +362,13 @@ The final value is 13 instead of 14, so one update is lost]
 | Critical section (variable / method) | Lock used | Why it needs protection |
 |---|---|---|
 | [e.g., `ReadyQueue.poll()`] | [lock name] | [reason] |
-| [Protects insertion into the shared queue and map] | [queueLock] | [ReadyQueue.add()] |
-| [Protects insertion into the shared queue and map] | [queueLock] | [ReadyQueue.add()] |
+| [ReadyQueue.add()] | [queueLock] | [Protects insertion into the shared queue and map] |
+| [ReadyQueue.poll()] | [queueLock] | [Prevents multiple CPUs from removing or selecting the same process.] |
+| [ReadyQueue.processOf()] | [queueLock] | [Protects access to the shared process map.] |
+| [ReadyQueue.snapshot()] | [queueLock] | [Protects reading a consistent queue snapshot.] |
+| [contextSwitchCount update and read] | [contextLock] | [Prevents lost updates and inconsistent reads.] |
+| [completedProcesses update and read] | [completedLock] | [Protects the completed-process counter.] |
+| [totalServiceTime update and read] | [serviceLock] | [Prevents incorrect service-time calculations.] |
 
 
 ## Question 3: Busy Waiting vs Semaphore
@@ -374,7 +379,7 @@ The final value is 13 instead of 14, so one update is lost]
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+[In the original starter, CPU threads repeatedly checked the ready queue when it was empty, which is called busy waiting and wastes CPU time. My original output showed 740 busy-waiting polls, while my successful final run showed zero. In my implementation, the counting semaphore starts at zero because there are initially no available queue entries to signal. After the initial 13 processes are added, its value becomes 13 because each add() operation releases one permit. When all processes are completed, the last CPU releases totalCPUs permits to wake any CPU threads blocked in acquire(), allowing them to exit instead of remaining blocked forever.]
 
 ## Question 4: Classical Problems and Deadlock
 
@@ -385,24 +390,24 @@ The final value is 13 instead of 14, so one update is lost]
 **Your Answer:** *(3-5 sentences)*
 
 **Classical problem and roles**:
-[Name the problem; who is the producer, who is the consumer?]
+[The scheduler is similar to the Producer-Consumer problem. The main thread acts as the initial producer by adding processes to the ready queue, while CPU threads act as consumers by taking processes from it. CPU threads can also act as producers when they re-enqueue processes that are not yet completed.]
 
 **Semaphores for a bounded queue (name and initial value)**:
-[Name the three semaphores and their initial values.]
+[For a bounded queue with capacity K, I would use three semaphores: empty initialized to K, full initialized to 0, and mutex initialized to 1. The empty semaphore counts available queue slots, full counts available processes, and mutex protects the queue.]
 
 **Deadlock scenario and prevention**:
-[Describe the scenario and the necessary condition you would break.]
+[A deadlock can happen if a producer acquires the mutex before waiting for an empty slot while the queue is full. The producer keeps holding the mutex, while a consumer cannot acquire that mutex to remove an item and create an empty slot. This causes circular waiting between the producer and consumer. To prevent this situation, the producer should wait on empty before acquiring mutex, breaking the hold-and-wait condition.]
 
 ## Summary
 
 **Key concepts I understood through these questions:**
-1.
-2.
-3.
+1.Race conditions happen when multiple threads access shared data without proper synchronization.
+2.ReentrantLock provides mutual exclusion and protects critical sections.
+3.A counting semaphore helps coordinate threads and prevents busy waiting.
 
 **Concepts I need to study more:**
-1.
-2.
+1.Deadlock conditions and prevention techniques.
+2.Semaphore behavior and thread scheduling.
 
 ---
 
