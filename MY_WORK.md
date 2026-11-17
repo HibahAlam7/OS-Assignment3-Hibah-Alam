@@ -365,6 +365,7 @@ The final value is 13 instead of 14, so one update is lost]
 | [Protects insertion into the shared queue and map] | [queueLock] | [ReadyQueue.add()] |
 | [Protects insertion into the shared queue and map] | [queueLock] | [ReadyQueue.add()] |
 
+
 ## Question 3: Busy Waiting vs Semaphore
 
 **Question**: Describe the **busy waiting** of the starter and its cost (give the `Busy-waiting polls` number from your **starter** run). What does the **value of your semaphore** represent? What is its **initial value** and why? What is its value right after the `numProcesses` initial `add()` calls? Why does the last CPU call `release(totalCPUs)` at the end, and what would happen if it did not?
